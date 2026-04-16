@@ -64,7 +64,7 @@ document.getElementById("undoBtn").addEventListener("click", () => {
 });
 
 document.getElementById("redoBtn").addEventListener("click", () => {
-  
+
 });
 
 // this is an example of user controlled save state
