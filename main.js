@@ -48,31 +48,37 @@ function setBrushColour(newColour){
 }
 
 
-///////////////////////////////////////
+/////////////////////////////////////// undo / redo
 
 /* we created our canvas in konvaSetup.js and called it canvas */
+// store single state history
+let prevState;
+
+// store multiple state history
+let undoStack = [];
+let redoStack = [];
+let currentState = canvas.toDataURL();
 
 document.getElementById("undoBtn").addEventListener("click", () => {
-  drawDataURLToCanvas(prevState);
+  // drawDataURLToCanvas(prevState);
 });
 
 document.getElementById("redoBtn").addEventListener("click", () => {
-
+  
 });
 
-//
-let prevState;
-//
+// this is an example of user controlled save state
+document.getElementById("saveStateBtn").addEventListener("click", () => {
+  prevState = canvas.toDataURL();
+});
 
-document.getElementById("saveBtn").addEventListener("click", () => {
+document.getElementById("saveFileBtn").addEventListener("click", () => {
   let canvasCapture = canvas.toDataURL();
-  /* remember to comment or delete below if using in production */
-  //console.log(canvasCapture);
-  ///
-  prevState = canvasCapture;
-  ///
+  /* remember to comment or delete below console if using in production */
+  console.log(canvasCapture);
 });
 
+// takes in an img url and puts it on the canvas
 function drawDataURLToCanvas(imgDataURL){
   /* create img element */
   let img2Draw = new Image();
@@ -92,4 +98,39 @@ function drawDataURLToCanvas(imgDataURL){
   });
   /* give the element a source, kicking off the event listener */
   img2Draw.src = imgDataURL;  
+}
+
+function saveNewState(){
+  // send old current state to end of undo array
+
+  // update current state
+
+  // reset redo stack
+
+}
+
+function undoState(){
+  //  check if undo available
+  if (undoStack.length > 0){
+    // send old current state to end of redo array
+
+    // set canvas to last state in the stack
+
+
+    // as well as current state
+
+  }
+}
+
+function redoState(){
+  //  check if redo available
+  if (redoStack.length > 0){
+    // send old current state to end of undo array
+
+    // set canvas to last state in the stack
+
+
+    // as well as current state
+
+  }
 }
