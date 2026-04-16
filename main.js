@@ -60,11 +60,12 @@ let redoStack = [];
 let currentState = canvas.toDataURL();
 
 document.getElementById("undoBtn").addEventListener("click", () => {
-  // drawDataURLToCanvas(prevState);
+   //drawDataURLToCanvas(prevState);
+  undoState();
 });
 
 document.getElementById("redoBtn").addEventListener("click", () => {
-
+  redoState();
 });
 
 // this is an example of user controlled save state
@@ -76,6 +77,16 @@ document.getElementById("saveFileBtn").addEventListener("click", () => {
   let canvasCapture = canvas.toDataURL();
   /* remember to comment or delete below console if using in production */
   console.log(canvasCapture);
+  // create a link element
+  const downloadLink = document.createElement("a");
+  // set image data as href
+  downloadLink.href = canvasCapture;
+  // set filename
+  downloadLink.download = "myImage.png";
+  // simulated the click
+  downloadLink.click();
+  // remove link once we're done
+  downloadLink.remove();
 });
 
 // takes in an img url and puts it on the canvas
@@ -100,25 +111,26 @@ function drawDataURLToCanvas(imgDataURL){
   img2Draw.src = imgDataURL;  
 }
 
+// this triggers when user finishes drawing a line
 function saveNewState(){
   // send old current state to end of undo array
-
+  undoStack.push(currentState);
   // update current state
-
+  currentState = canvas.toDataURL();
   // reset redo stack
-
+  redoStack = [];
 }
 
 function undoState(){
   //  check if undo available
   if (undoStack.length > 0){
     // send old current state to end of redo array
-
+    redoStack.push(currentState);
     // set canvas to last state in the stack
-
-
+    let undoURL = undoStack.pop();
+    drawDataURLToCanvas(undoURL);
     // as well as current state
-
+    currentState = undoURL;
   }
 }
 
@@ -126,11 +138,11 @@ function redoState(){
   //  check if redo available
   if (redoStack.length > 0){
     // send old current state to end of undo array
-
+    undoStack.push(currentState);
     // set canvas to last state in the stack
-
-
+    let redoURL = redoStack.pop();
+    drawDataURLToCanvas(redoURL);
     // as well as current state
-
+    currentState = redoURL;
   }
 }
