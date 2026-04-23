@@ -1,7 +1,20 @@
+/////////////////////////////////////// brush water function
+// this is the code that 'dries' the user's brush over time. this was implemented to add a certain amount of
+// friction to the interaction. while this friction adds additional effort, through the repeated need to 'dip'
+// the brush, it also adds a certain layer of colour (or rather alpha) indeterminacy. It means there is
+// additional variation based on users' choices of how ofter to 'dip' the brush, and how many times to
+// paint over the same area.
+
+// this number represents how much 'water' is on the brush by default : for reference, dipping brush in
+// cup sets this to 1.0
 let waterAmount = 0.5;
+// this is the rate at which the brush dries as the user paints : it's pretty fast currently, but that helps
+// emphasise the interaction
 let dryAmount = 0.005;
+// toDo : update this to the first colour of the palette
 let currentColour = "rgb(255, 255, 255)";
 
+// toDo : use loop to assign event listeners
 document.getElementById("palette01").addEventListener("click", addColour);
 document.getElementById("palette02").addEventListener("click", addColour);
 document.getElementById("palette03").addEventListener("click", addColour);
@@ -14,12 +27,15 @@ document.getElementById("palette08").addEventListener("click", addColour);
 
 function addColour(e){
   let buttonClicked = e.target;
+  // rather than store colour data as a data-* attribute, just check its current background colour
   let backgroundColour = getComputedStyle(buttonClicked).backgroundColor;
   currentColour = backgroundColour;
+  // make sure we add in alpha value based on waterAmount
   let newAlphaColour = rgbaFromRGBString(backgroundColour, waterAmount);
   setBrushColour(newAlphaColour);
 }
 
+// this will run during the drawing loop defined in konvaSetup.js
 function dryingBrush(){
   waterAmount = waterAmount - dryAmount;
   let newColour = rgbaFromRGBString(currentColour, waterAmount);
